@@ -3,7 +3,7 @@
 
 A Streamlit-based web app that analyzes financial and healthcare contracts to identify risks, compliance issues, and unfair terms.
 
-🔗 **Live App:** [Click Here]([https://your-app-name.streamlit.app](https://smart-contract-compliance-checker.streamlit.app/))
+🔗 **Live App:** [Click Here](https://your-app-name.streamlit.app](https://smart-contract-compliance-checker.streamlit.app/)
 
 ## Features
 - 📑 Upload contracts (PDF, DOCX, TXT, Images)
