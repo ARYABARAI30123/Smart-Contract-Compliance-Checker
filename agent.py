@@ -10,7 +10,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_groq import ChatGroq
 
 #  Set Groq API Key (Ensure this is correctly set in .env)
-GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 #  Initialize LLM with Groq (Using Mixtral-8x7b)
 llm = ChatGroq(api_key=GROQ_API_KEY, model_name="mixtral-8x7b-32768")
 
