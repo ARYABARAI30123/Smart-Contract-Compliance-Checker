@@ -1,7 +1,6 @@
 import os
 import pdfplumber
 import pytesseract
-import pdf2image
 from PIL import Image
 from docx import Document
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -20,37 +19,22 @@ llm = ChatGroq(api_key=GROQ_API_KEY, model_name="mixtral-8x7b-32768")
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 def extract_text(file_path):
-    """Extracts text from PDFs, Images, Word Docs, and TXT files (Includes OCR for Scanned PDFs)."""
+    """Extracts text from PDFs, Images, Word Docs, and TXT files."""
     ext = file_path.split(".")[-1].lower()
 
     try:
         if ext == "pdf":
-            # Attempt text extraction with pdfplumber
             with pdfplumber.open(file_path) as pdf:
-                text = " ".join([page.extract_text() for page in pdf.pages if page.extract_text()])
-            
-            # If no text found, use OCR (Assumes scanned PDF)
-            if not text.strip():
-                text = ""
-                images = pdf2image.convert_from_path(file_path)
-                for img in images:
-                    text += pytesseract.image_to_string(img)
-            
-            return text.strip() or "Error: No readable text found in PDF (even after OCR)."
-        
+                return " ".join([page.extract_text() for page in pdf.pages if page.extract_text()]) or "Error: No text found in PDF."
         elif ext in ["jpg", "jpeg", "png"]:
             return pytesseract.image_to_string(Image.open(file_path)).strip() or "Error: No text detected in image."
-        
         elif ext == "docx":
             return "\n".join([para.text for para in Document(file_path).paragraphs]).strip() or "Error: No text found in DOCX."
-        
         elif ext == "txt":
             with open(file_path, "r", encoding="utf-8") as file:
                 return file.read().strip() or "Error: No text found in TXT."
-        
         else:
             return "Error: Unsupported file format."
-    
     except Exception as e:
         return f"Error processing {ext.upper()}: {str(e)}"
 
