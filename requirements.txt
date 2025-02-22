@@ -17,3 +17,4 @@ flask-cors
 fastapi
 uvicorn
 python-multipart
+pdf2image
